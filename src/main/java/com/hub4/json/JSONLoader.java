@@ -1,6 +1,6 @@
-package hub4.json;
+package com.hub4.json;
 
-import hub4.Main;
+import com.hub4.Main;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,7 +14,7 @@ public class JSONLoader {
     private JSONLoader() {}
 
     public static JSONObject loadJson(String fileName) {
-        try (InputStream is = Main.class.getClassLoader().getResourceAsStream("contract-content.json")) {
+        try (InputStream is = Main.class.getClassLoader().getResourceAsStream("template.json")) {
             Objects.requireNonNull(is, "contractNotFound");
 
             JSONParser parser = new JSONParser();

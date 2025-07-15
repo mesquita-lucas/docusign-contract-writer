@@ -1,4 +1,4 @@
-package hub4.dto;
+package com.hub4.dto;
 
 public record ContractDTO(
         String consignorName,

@@ -1,6 +1,6 @@
-package hub4.dao;
+package com.hub4.dao;
 
-import hub4.dto.ContractDTO;
+import com.hub4.dto.ContractDTO;
 
 public class SheetsContractDAO{
     private SheetsContractDAO() {}

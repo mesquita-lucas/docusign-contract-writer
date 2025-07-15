@@ -1,4 +1,4 @@
-package hub4.model;
+package com.hub4.model;
 
 public record ContractContents(
         String contractTitle,
