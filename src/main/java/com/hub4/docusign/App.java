@@ -41,7 +41,7 @@ public class App {
                 {
                     String consentUrl = "https://account-d.docusign.com/oauth/auth?response_type=code&scope=impersonation%20signature"
                             + "&client_id=" + new ConfigLoader("app.config").get("clientId")
-                            + "&redirect_uri=" + "https://developers.docusign.com/platform/auth/consent";
+                            + "&redirect_uri=" + DevCenterPage;
 
                     Desktop.getDesktop().browse(URI.create(consentUrl));
                 } catch (Exception ex) {
