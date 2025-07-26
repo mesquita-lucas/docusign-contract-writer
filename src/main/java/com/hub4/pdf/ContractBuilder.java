@@ -14,10 +14,7 @@ import rst.pdfbox.layout.elements.Paragraph;
 import rst.pdfbox.layout.text.BaseFont;
 import rst.pdfbox.layout.text.Position;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,40 +32,47 @@ public class ContractBuilder {
 
     private ContractBuilder() {}
 
-    public static void build(){
+    public static byte[] build(){
         Document document = new Document(70, 70, 100, 50);
 
         List<Section> sections = createSectionList(content);
-
         sections.forEach(section -> addSection(document, section));
 
         try{
-            document.save(new FileOutputStream(fileOutputPath));
+            ByteArrayOutputStream logolessDocument = new ByteArrayOutputStream();
+            document.save(logolessDocument);
+
+            byte[] finalContract = addHeaderLogo(logolessDocument.toByteArray());
+
+            return finalContract;
         } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
-
-        try(InputStream is = new FileInputStream(fileOutputPath)){
-            PDDocument finalDoc = PDDocument.load(is);
-
-            addHeaderLogo(finalDoc, finalDoc.getPage(0));
-
-            finalDoc.save(new FileOutputStream(fileOutputPath));
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
     }
 
-    private static void addHeaderLogo(PDDocument doc, PDPage page){
-        try( PDPageContentStream cs = new PDPageContentStream(doc, page, true, true) ){
-            ImageElement image = loadImage(doc);
-            image.draw(doc, cs, image.getAbsolutePosition(), null);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+    private static byte[] addHeaderLogo(byte[] documentInBytes) throws IOException {
+        PDDocument logolessDocument = PDDocument.load(documentInBytes);
+        int numberOfPages = logolessDocument.getNumberOfPages();
+        ImageElement logo = loadImage(logoSideSize, logoPosition);
+
+        for (int i = 0; i < numberOfPages; i++) {
+            try(PDPageContentStream cs = new PDPageContentStream(
+                    logolessDocument,
+                    logolessDocument.getPage(i),
+                    true,
+                    true))
+            {
+                logo.draw(logolessDocument, cs, logo.getAbsolutePosition(), null);
+            }
         }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        logolessDocument.save(baos);
+        return baos.toByteArray();
     }
 
-    private static ImageElement loadImage(PDDocument doc) {
+    private static ImageElement loadImage(int logoSideSize, Position logoPosition){
         try(InputStream image = ContractBuilder.class.getClassLoader().getResourceAsStream(logoPath)){
             Objects.requireNonNull(image, "Image cannot be null");
 

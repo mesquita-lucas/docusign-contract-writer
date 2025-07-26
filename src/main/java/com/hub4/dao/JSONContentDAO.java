@@ -5,6 +5,8 @@ import com.hub4.json.JSONLoader;
 import com.hub4.model.ContractContents;
 import org.json.simple.JSONObject;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 public class JSONContentDAO {
@@ -21,9 +23,11 @@ public class JSONContentDAO {
 
     private static JSONObject loadContractContents(ContractDTO dto) {
         JSONObject json = JSONLoader.loadJson("template.json");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         String consignorID = json.get("consignorID").toString();
         String productDetails = json.get("productDetails").toString();
+        String signatureDate = json.get("signatures").toString();
 
         Map<String, String> consignorIDPlaceholders = Map.of(
                 "{{email_consignante}}", dto.consignorEmail(),
@@ -41,8 +45,13 @@ public class JSONContentDAO {
                 "{{prod_valor_venda}}", dto.prodSellValue()
         );
 
+        Map<String, String> signatureDatePlaceholders = Map.of(
+                "{{data}}", LocalDate.now().format(formatter).toString()
+        );
+
         json.replace("consignorID", replacePlaceholders(consignorID, consignorIDPlaceholders));
         json.replace("productDetails", replacePlaceholders(productDetails, productDetailsPlaceholders));
+        json.replace("signatures", replacePlaceholders(signatureDate, signatureDatePlaceholders));
 
         return json;
     }

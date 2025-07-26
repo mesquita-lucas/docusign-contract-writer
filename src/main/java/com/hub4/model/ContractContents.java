@@ -15,5 +15,4 @@ public record ContractContents(
         String generalProvisions,
         String signatures,
         String annex
-) {
-}
+){}
