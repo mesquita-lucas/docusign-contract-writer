@@ -19,7 +19,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         try
         {
-            ConfigLoader config = new ConfigLoader("app.config");
+            ConfigLoader config = new ConfigLoader("secrets/app.config");
 
             ContractDTO contractDTO = MockContractDAO.get();
 
@@ -40,7 +40,7 @@ public class App {
                 try
                 {
                     String consentUrl = "https://account-d.docusign.com/oauth/auth?response_type=code&scope=impersonation%20signature"
-                            + "&client_id=" + new ConfigLoader("app.config").get("clientId")
+                            + "&client_id=" + new ConfigLoader("secrets/app.config").get("clientId")
                             + "&redirect_uri=" + DevCenterPage;
 
                     Desktop.getDesktop().browse(URI.create(consentUrl));

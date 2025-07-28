@@ -36,7 +36,7 @@ public class DocusignAuthenticator {
     }
 
     public AuthData authenticate() throws IOException, ApiException {
-        InputStream keyInputStream = DocusignAuthenticator.class.getClassLoader().getResourceAsStream("private.key");
+        InputStream keyInputStream = DocusignAuthenticator.class.getClassLoader().getResourceAsStream("secrets/private.key");
 
         if(keyInputStream == null) throw new FileNotFoundException("Private Key not found");
 
