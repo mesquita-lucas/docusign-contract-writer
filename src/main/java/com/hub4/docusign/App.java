@@ -52,7 +52,7 @@ public class App {
                 System.out.println("Erro de API: " + e.getMessage());
             }
         } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
