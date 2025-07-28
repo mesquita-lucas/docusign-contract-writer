@@ -12,11 +12,8 @@ public class MockContractDAO{
 
     public static ContractDTO get() throws IOException {
         InputStream is = MockContractDAO.class.getClassLoader().getResourceAsStream("HUB4-preset-logos-15.png");
-        InputStream isp = MockContractDAO.class.getClassLoader().getResourceAsStream("image - Pedro Faria.png");
         assert is != null;
         String encodedLogo = Base64.getEncoder().encodeToString(is.readAllBytes());
-        assert isp != null;
-        String encodedPedro = Base64.getEncoder().encodeToString(isp.readAllBytes());
 
         return new ContractDTO(
                 "Lucas de Mesquita",
@@ -29,7 +26,7 @@ public class MockContractDAO{
                 "Conservado",
                 "",
                 "R$12.990,00",
-                List.of(encodedLogo, encodedPedro)
+                List.of(encodedLogo)
                 );
     }
 }
