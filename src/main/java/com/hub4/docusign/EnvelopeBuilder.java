@@ -5,10 +5,8 @@ import com.hub4.dto.ContractDTO;
 import rst.pdfbox.layout.text.Position;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;
-import java.util.Properties;
 
 public class EnvelopeBuilder {
     private static final Position consignorSigningPosition = new Position(74, 451); //first to show

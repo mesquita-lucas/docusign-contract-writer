@@ -1,5 +1,7 @@
 package com.hub4.dto;
 
+import java.util.List;
+
 public record ContractDTO(
         String consignorName,
         String consignorCPF,
@@ -10,5 +12,6 @@ public record ContractDTO(
         String prodYear,
         String conservationState,
         String prodAccessories,
-        String prodSellValue
+        String prodSellValue,
+        List<String> encodedImages
 ){}

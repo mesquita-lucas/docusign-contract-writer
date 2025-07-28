@@ -5,6 +5,7 @@ import com.hub4.json.JSONLoader;
 import com.hub4.model.ContractContents;
 import org.json.simple.JSONObject;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
 public class JSONContentDAO {
     private JSONContentDAO() {}
 
-    public static ContractContents get(){
+    public static ContractContents get() throws IOException {
         ContractDTO dto = MockContractDAO.get();
 
         JSONObject json = loadContractContents(dto);

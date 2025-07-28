@@ -1,5 +1,7 @@
 package com.hub4.pdf;
 import com.hub4.dao.JSONContentDAO;
+import com.hub4.dao.MockContractDAO;
+import com.hub4.dto.ContractDTO;
 import com.hub4.model.ContractContents;
 import com.hub4.model.Section;
 import com.hub4.model.SectionType;
@@ -7,6 +9,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import rst.pdfbox.layout.elements.ControlElement;
 import rst.pdfbox.layout.elements.Document;
 import rst.pdfbox.layout.elements.ImageElement;
@@ -15,6 +18,7 @@ import rst.pdfbox.layout.text.BaseFont;
 import rst.pdfbox.layout.text.Position;
 
 import java.io.*;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,14 +30,12 @@ public class ContractBuilder {
     private final static BaseFont fontFamily = BaseFont.Helvetica;
     private final static int fontSize = 11;
 
-    private final static String fileOutputPath = "temp/build.pdf";
-
-    private final static ContractContents content = JSONContentDAO.get();
-
     private ContractBuilder() {}
 
-    public static byte[] build(){
+    public static byte[] build() throws IOException {
         Document document = new Document(70, 70, 100, 50);
+
+        final ContractContents content = JSONContentDAO.get();
 
         List<Section> sections = createSectionList(content);
         sections.forEach(section -> addSection(document, section));
@@ -53,7 +55,7 @@ public class ContractBuilder {
     private static byte[] addHeaderLogo(byte[] documentInBytes) throws IOException {
         PDDocument logolessDocument = PDDocument.load(documentInBytes);
         int numberOfPages = logolessDocument.getNumberOfPages();
-        ImageElement logo = loadImage(logoSideSize, logoPosition);
+        ImageElement logo = loadLogo(logoSideSize, logoPosition);
 
         for (int i = 0; i < numberOfPages; i++) {
             try(PDPageContentStream cs = new PDPageContentStream(
@@ -72,7 +74,7 @@ public class ContractBuilder {
         return baos.toByteArray();
     }
 
-    private static ImageElement loadImage(int logoSideSize, Position logoPosition){
+    private static ImageElement loadLogo(int logoSideSize, Position logoPosition){
         try(InputStream image = ContractBuilder.class.getClassLoader().getResourceAsStream(logoPath)){
             Objects.requireNonNull(image, "Image cannot be null");
 
@@ -86,6 +88,7 @@ public class ContractBuilder {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
+
     }
 
     private static void addSection(Document doc, Section section){
@@ -106,6 +109,8 @@ public class ContractBuilder {
 
             par.setAlignment(section.getAlignment());
             par.setLineSpacing(1.8f);
+
+            Paragraph paragraph = new Paragraph();
 
             doc.add(par);
             doc.add(blankLine());
