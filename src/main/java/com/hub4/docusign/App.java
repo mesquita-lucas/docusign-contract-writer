@@ -17,6 +17,7 @@ public class App {
     static String DevCenterPage = "https://developers.docusign.com/platform/auth/consent";
 
     public static void main(String[] args) throws IOException {
+        System.out.println(">> Entrou no App.main()");
         try
         {
             ConfigLoader config = new ConfigLoader("secrets/app.config");
