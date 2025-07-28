@@ -86,6 +86,7 @@ public class ContractBuilder {
 
             return logo;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e.getMessage(), e);
         }
 
