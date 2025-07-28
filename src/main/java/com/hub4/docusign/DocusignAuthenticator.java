@@ -8,6 +8,8 @@ import com.docusign.esign.client.auth.OAuth.OAuthToken;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public class DocusignAuthenticator {
@@ -36,11 +38,13 @@ public class DocusignAuthenticator {
     }
 
     public AuthData authenticate() throws IOException, ApiException {
-        InputStream keyInputStream = DocusignAuthenticator.class.getClassLoader().getResourceAsStream("secrets/private.key");
+        String privateKeyContent = System.getenv("PRIVATE_KEY");
+        Path keyPath = Path.of("private.key");
 
-        if(keyInputStream == null) throw new FileNotFoundException("Private Key not found");
+        if (privateKeyContent == null || privateKeyContent.isBlank())
+            throw new IllegalStateException("PRIVATE_KEY environment variable not set");
 
-        byte[] privateKey = keyInputStream.readAllBytes();
+        byte[] privateKey = Files.readAllBytes(keyPath);
 
         OAuthToken token = apiClient.requestJWTUserToken(
                 config.get("clientId"),
