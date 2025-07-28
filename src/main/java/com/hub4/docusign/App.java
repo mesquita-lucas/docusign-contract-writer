@@ -20,7 +20,7 @@ public class App {
         System.out.println(">> Entrou no App.main()");
         try
         {
-            ConfigLoader config = new ConfigLoader("secrets/app.config");
+            ConfigLoader config = new ConfigLoader("/etc/secrets/app.config");
 
             ContractDTO contractDTO = MockContractDAO.get();
 
@@ -41,7 +41,7 @@ public class App {
                 try
                 {
                     String consentUrl = "https://account-d.docusign.com/oauth/auth?response_type=code&scope=impersonation%20signature"
-                            + "&client_id=" + new ConfigLoader("secrets/app.config").get("clientId")
+                            + "&client_id=" + new ConfigLoader("/etc/secrets/app.config").get("clientId")
                             + "&redirect_uri=" + DevCenterPage;
 
                     Desktop.getDesktop().browse(URI.create(consentUrl));

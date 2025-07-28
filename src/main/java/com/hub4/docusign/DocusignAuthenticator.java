@@ -5,6 +5,7 @@ import com.docusign.esign.client.ApiException;
 import com.docusign.esign.client.auth.OAuth.UserInfo;
 import com.docusign.esign.client.auth.OAuth.OAuthToken;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,9 +37,7 @@ public class DocusignAuthenticator {
     }
 
     public AuthData authenticate() throws IOException, ApiException {
-        InputStream keyInputStream = DocusignAuthenticator.class.getClassLoader().getResourceAsStream("secrets/private.key");
-
-        if(keyInputStream == null) throw new FileNotFoundException("Private Key not found");
+        InputStream keyInputStream = new FileInputStream("/etc/secrets/private.key");
 
         byte[] privateKey = keyInputStream.readAllBytes();
 
@@ -55,6 +54,8 @@ public class DocusignAuthenticator {
 
         UserInfo userInfo = apiClient.getUserInfo(accessToken);
         String accountId = userInfo.getAccounts().getFirst().getAccountId();
+
+        keyInputStream.close();
 
         return new AuthData(apiClient, accessToken, accountId);
     }

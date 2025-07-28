@@ -1,5 +1,6 @@
 package com.hub4.docusign;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +13,8 @@ public class ConfigLoader {
         properties = new Properties();
 
         try(
-            InputStream is = ConfigLoader.class.getClassLoader().getResourceAsStream(configPath)
+                InputStream is = new FileInputStream(configPath);
         ){
-            if (is == null) throw new FileNotFoundException("configuration not found");
 
             properties.load(is);
         }
