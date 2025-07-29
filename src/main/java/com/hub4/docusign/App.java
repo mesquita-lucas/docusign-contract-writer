@@ -16,7 +16,7 @@ import java.net.URI;
 public class App {
     static String DevCenterPage = "https://developers.docusign.com/platform/auth/consent";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         System.out.println(">> Entrou no App.main()");
         try
         {
