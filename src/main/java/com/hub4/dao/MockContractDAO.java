@@ -26,7 +26,9 @@ public class MockContractDAO{
                 "Conservado",
                 "",
                 "R$12.990,00",
-                List.of(encodedLogo)
+                encodedLogo,
+                "application/jpeg",
+                "imagem"
                 );
     }
 }

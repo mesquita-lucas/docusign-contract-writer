@@ -13,5 +13,7 @@ public record ContractDTO(
         String conservationState,
         String prodAccessories,
         String prodSellValue,
-        List<String> encodedImages
+        String imageBase64,
+        String imageMimeType,
+        String imageName
 ){}
