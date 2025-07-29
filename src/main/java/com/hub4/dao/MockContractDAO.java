@@ -11,7 +11,7 @@ public class MockContractDAO{
     private MockContractDAO() {}
 
     public static ContractDTO get() throws IOException {
-        InputStream is = MockContractDAO.class.getClassLoader().getResourceAsStream("HUB4-preset-logos-15.png");
+        InputStream is = MockContractDAO.class.getClassLoader().getResourceAsStream("HUB4-preset-logos-15.jpg");
         assert is != null;
         String encodedLogo = Base64.getEncoder().encodeToString(is.readAllBytes());
 
