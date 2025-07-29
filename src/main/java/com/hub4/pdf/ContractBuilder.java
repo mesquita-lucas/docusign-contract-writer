@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ContractBuilder {
-    private final static String logoPath = "HUB4-preset-logos-15.png";
+    private final static String logoPath = "HUB4-preset-logos-15.jpg";
     private final static int logoSideSize = 50;
     private final static Position logoPosition = new Position(30, 815);
 
