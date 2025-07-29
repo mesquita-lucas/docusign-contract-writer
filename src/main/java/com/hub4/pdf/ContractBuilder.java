@@ -25,7 +25,7 @@ import java.util.Objects;
 public class ContractBuilder {
     private final static String logoPath = "HUB4-preset-logos-15.jpg";
     private final static int logoSideSize = 50;
-    private final static Position logoPosition = new Position(30, 815);
+    private final static Position logoPosition = new Position(30, 785);
 
     private final static BaseFont fontFamily = BaseFont.Helvetica;
     private final static int fontSize = 11;
