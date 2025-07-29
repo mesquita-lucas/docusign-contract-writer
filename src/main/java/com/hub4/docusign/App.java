@@ -53,6 +53,7 @@ public class App {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }

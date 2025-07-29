@@ -55,7 +55,7 @@ public class ContractBuilder {
     private static byte[] addHeaderLogo(byte[] documentInBytes) throws IOException {
         PDDocument logolessDocument = PDDocument.load(documentInBytes);
         int numberOfPages = logolessDocument.getNumberOfPages();
-        PDImageXObject logo = loadImage(logoSideSize, logolessDocument);
+        PDImageXObject logo = loadImage(logolessDocument);
 
         for (int i = 0; i < numberOfPages; i++) {
             try(PDPageContentStream cs = new PDPageContentStream(
@@ -64,7 +64,7 @@ public class ContractBuilder {
                     true,
                     true))
             {
-                cs.drawImage(logo, logoPosition.getX(), logoPosition.getY());
+                cs.drawImage(logo, logoPosition.getX(), logoPosition.getY(), logoSideSize, logoSideSize);
             }
         }
 
@@ -74,7 +74,7 @@ public class ContractBuilder {
         return baos.toByteArray();
     }
 
-    private static PDImageXObject loadImage(int size, PDDocument document) throws IOException {
+    private static PDImageXObject loadImage(PDDocument document) throws IOException {
         try(InputStream image = ContractBuilder.class.getClassLoader().getResourceAsStream(logoPath)){
             Objects.requireNonNull(image, "Image cannot be null");
 
