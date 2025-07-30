@@ -25,7 +25,8 @@ public class FormController {
         System.out.println("apiKey no arquivo: [" + expectedApiKey + "]");
 
         if (expectedApiKey == null || !expectedApiKey.equals(apiKey)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API key");
+            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API key");
+            System.out.println("Invalid apiKey: Null");
         }
 
         System.out.println(formData.toString());
