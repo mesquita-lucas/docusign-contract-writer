@@ -1,6 +1,7 @@
 package com.hub4.dao;
 
 import com.hub4.dto.ContractDTO;
+import com.hub4.dto.ImageDTO;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +15,11 @@ public class MockContractDAO{
         InputStream is = MockContractDAO.class.getClassLoader().getResourceAsStream("HUB4-preset-logos-15.jpg");
         assert is != null;
         String encodedLogo = Base64.getEncoder().encodeToString(is.readAllBytes());
+        ImageDTO image = new ImageDTO(
+                encodedLogo,
+                "image/jpg",
+                "logo"
+        );
 
         return new ContractDTO(
                 "Lucas de Mesquita",
@@ -26,9 +32,7 @@ public class MockContractDAO{
                 "Conservado",
                 "",
                 "R$12.990,00",
-                encodedLogo,
-                "application/jpeg",
-                "imagem"
+                List.of(image)
                 );
     }
 }

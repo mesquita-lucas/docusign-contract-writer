@@ -22,10 +22,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
+//todo: conectar backend à resposta da API. Usar postman para velocidade. Refatorar geração do contrato!
+
 public class ContractBuilder {
     private final static String logoPath = "HUB4-preset-logos-15.jpg";
     private final static int logoSideSize = 50;
-    private final static Position logoPosition = new Position(30, 785);
+    private final static Position logoPosition = new Position(30, 775);
 
     private final static BaseFont fontFamily = BaseFont.Helvetica;
     private final static int fontSize = 11;

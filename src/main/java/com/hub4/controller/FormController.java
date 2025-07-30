@@ -1,5 +1,6 @@
 package com.hub4.controller;
 
+import com.hub4.docusign.ConfigLoader;
 import com.hub4.dto.ContractDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 public class FormController {
 
@@ -15,10 +18,14 @@ public class FormController {
     public ResponseEntity<String> receiveFormData(
             @RequestBody ContractDTO formData,
             @RequestHeader(value = "x-api-key", required = false) String apiKey
-    ){
-        if(!"hub41801".equals(apiKey)) {
+    ) throws IOException {
+        ConfigLoader configLoader = new ConfigLoader("/etc/secrets/app.config");
+
+        if(!configLoader.get("apiKey").equals(apiKey)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid api key");
         }
+
+        System.out.println(formData.toString());
 
         return ResponseEntity.ok().body(formData.toString());
     }

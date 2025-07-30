@@ -1,4 +1,4 @@
-package com.hub4.controller;
+package com.hub4.dto;
 
 public record MessageDTO(
         String text

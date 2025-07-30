@@ -1,6 +1,7 @@
 package com.hub4.controller;
 
 import com.hub4.docusign.App;
+import com.hub4.dto.MessageDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

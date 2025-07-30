@@ -1,5 +1,7 @@
 package com.hub4.dto;
 
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
 import java.util.List;
 
 public record ContractDTO(
@@ -13,7 +15,5 @@ public record ContractDTO(
         String conservationState,
         String prodAccessories,
         String prodSellValue,
-        String imageBase64,
-        String imageMimeType,
-        String imageName
+        List<ImageDTO> images
 ){}
