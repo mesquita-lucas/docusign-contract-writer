@@ -21,8 +21,11 @@ public class FormController {
     ) throws IOException {
         ConfigLoader configLoader = new ConfigLoader("/etc/secrets/app.config");
 
-        if(!configLoader.get("apiKey").equals(apiKey)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid api key");
+        String expectedApiKey = configLoader.get("apiKey");
+        System.out.println("apiKey no arquivo: [" + expectedApiKey + "]");
+
+        if (expectedApiKey == null || !expectedApiKey.equals(apiKey)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API key");
         }
 
         System.out.println(formData.toString());
