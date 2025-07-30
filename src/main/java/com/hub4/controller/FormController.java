@@ -25,14 +25,14 @@ public class FormController {
             @RequestBody ContractDTO formData,
             @RequestHeader(value = "x-api-key", required = false) String apiKey
     ) throws IOException {
-        ConfigLoader configLoader = new ConfigLoader("/etc/secrets/app.config");
-
-        String expectedApiKey = configLoader.get("apiKey");
-        System.out.println("apiKey no arquivo: [" + expectedApiKey + "]");
-
-        if (!apiKeyValidator.isValid(apiKey)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API key");
-        }
+//        ConfigLoader configLoader = new ConfigLoader("/etc/secrets/app.config");
+//
+//        String expectedApiKey = configLoader.get("apiKey");
+//        System.out.println("apiKey no arquivo: [" + expectedApiKey + "]");
+//
+//        if (!apiKeyValidator.isValid(apiKey)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API key");
+//        }
 
         System.out.println(formData.toString());
 
