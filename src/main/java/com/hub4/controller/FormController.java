@@ -1,5 +1,6 @@
 package com.hub4.controller;
 
+import com.docusign.esign.client.auth.ApiKeyAuth;
 import com.hub4.docusign.ConfigLoader;
 import com.hub4.dto.ContractDTO;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,11 @@ import java.io.IOException;
 
 @RestController
 public class FormController {
+    private final ApiKeyValidator apiKeyValidator;
+
+    public FormController(ApiKeyValidator apiKeyValidator) {
+        this.apiKeyValidator = apiKeyValidator;
+    }
 
     @PostMapping("/form-data")
     public ResponseEntity<String> receiveFormData(
@@ -24,9 +30,8 @@ public class FormController {
         String expectedApiKey = configLoader.get("apiKey");
         System.out.println("apiKey no arquivo: [" + expectedApiKey + "]");
 
-        if (expectedApiKey == null || !expectedApiKey.equals(apiKey)) {
-            //return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API key");
-            System.out.println("Invalid apiKey: Null");
+        if (!apiKeyValidator.isValid(apiKey)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API key");
         }
 
         System.out.println(formData.toString());
