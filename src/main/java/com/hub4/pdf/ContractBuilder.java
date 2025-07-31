@@ -37,6 +37,8 @@ public class ContractBuilder {
     public static byte[] build() throws IOException {
         Document document = new Document(70, 70, 100, 50);
 
+        Document doc = new Document();
+
         final ContractContents content = JSONContentDAO.get();
 
         List<Section> sections = createSectionList(content);
@@ -109,10 +111,9 @@ public class ContractBuilder {
             par.setAlignment(section.getAlignment());
             par.setLineSpacing(1.8f);
 
-            Paragraph paragraph = new Paragraph();
-
             doc.add(par);
             doc.add(blankLine());
+
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage(), e);
         }
