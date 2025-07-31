@@ -1,28 +1,32 @@
 package com.hub4.model;
 
 import com.hub4.dto.ContractDTO;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import rst.pdfbox.layout.elements.ControlElement;
 import rst.pdfbox.layout.elements.Document;
 import rst.pdfbox.layout.elements.Paragraph;
 import rst.pdfbox.layout.text.BaseFont;
 import rst.pdfbox.layout.text.Position;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 public class Contract {
     private final ContractDTO contractDTO;
     private final ContractContents contractContents;
     private byte[] documentInBytes;
-    private Document document;
+    private final Document document;
     private final List<Section> sections;
-
-    private final String logoPath = "HUB4-preset-logos-15.jpg";
-    private final int logoSideSize = 50;
-    private final Position logoPosition = new Position(30, 775);
 
     public Contract(ContractDTO contractDTO, ContractContents contractContents) {
         this.contractDTO = contractDTO;
@@ -48,6 +52,53 @@ public class Contract {
         } catch (IOException e) {
             System.out.println("Unable to save document after writing content: " + e.getMessage());
             throw new RuntimeException(e);
+        }
+    }
+
+    public void AddHeader() throws IOException {
+        final int logoSideSize = 50;
+        final String logoPath = "HUB4-preset-logos-15.jpg";
+        final Position logoPosition = new Position(30, 775);
+
+        try(
+                InputStream is = Contract.class.getClassLoader().getResourceAsStream(logoPath);
+                PDDocument document = PDDocument.load(documentInBytes)
+        ){
+            Objects.requireNonNull(is, "Unable to add image to inputStream");
+            int numberOfPages = document.getNumberOfPages();
+
+            String base64Logo = Base64.getEncoder().encodeToString(is.readAllBytes());
+            PDImageXObject logo = loadImage(base64Logo, document);
+
+            for (int i = 0; i < numberOfPages; i++) {
+                try (
+                        PDPageContentStream cs = new PDPageContentStream(
+                                document,
+                                document.getPage(i),
+                                PDPageContentStream.AppendMode.APPEND,
+                                true
+                        )
+                ){
+                    cs.drawImage(logo, logoPosition.getX(), logoPosition.getY(), logoSideSize, logoSideSize);
+                }
+            }
+
+            save(document);
+        }
+    }
+
+    public void AddAnnexImages(){
+
+    }
+
+    private PDImageXObject loadImage(String imageBase64, PDDocument document) throws IOException {
+        try (
+                InputStream image = Contract.class.getClassLoader().getResourceAsStream(imageBase64)
+        ){
+            Objects.requireNonNull(image, "Unable to load image from classpath; image is null.");
+            byte[] imageBytes = Base64.getDecoder().decode(image.readAllBytes());
+
+            return PDImageXObject.createFromByteArray(document, imageBytes, null);
         }
     }
 
