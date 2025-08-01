@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EnvelopeBuilder {
     private static final Position consignorSigningPosition = new Position(74, 451); //first to show
-    private static final Position consigneeSigningPosition = new Position(74, 581); //second to show
+    private static final Position consigneeSigningPosition = new Position(74, 591); //second to show
 
     public static EnvelopeDefinition build(ContractDTO contractDTO, String encodedPDF) throws IOException {
         EnvelopeDefinition envelope = new EnvelopeDefinition();

@@ -1,5 +1,6 @@
 package com.hub4.domain.model;
 
+import com.hub4.api.dto.ImageDTO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
@@ -27,7 +28,7 @@ public class Contract {
         this.sections = loadSectionsList(contractContents);
     }
 
-    public void writeContract(){
+    public void writeContract() throws IOException {
         sections.forEach(section -> {
             try {
                 write(section);
@@ -36,6 +37,8 @@ public class Contract {
                 throw new RuntimeException(e);
             }
         });
+
+        write(sections.get(13)); //add another annex page//
 
         try {
             save(document);
@@ -77,10 +80,14 @@ public class Contract {
         }
     }
 
-    /*public void addAnnexImages(List<ImageDTO> images){
+    public void addAnnexImages(List<ImageDTO> images) throws IOException {
+        try(PDDocument pDocument = PDDocument.load(documentInBytes)){
+            AnnexImageDrawer drawer = new AnnexImageDrawer(pDocument);
 
+            drawer.draw(images);
+            save(pDocument);
+        }
     }
-     */
 
     public byte[] saveContract(){
         return documentInBytes;

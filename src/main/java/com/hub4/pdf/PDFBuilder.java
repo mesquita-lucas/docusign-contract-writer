@@ -23,7 +23,7 @@ public class PDFBuilder {
     public byte[] buildContract() throws IOException {
         contract.writeContract();
         contract.addHeader();
-        //contract.addAnnexImages(contractDTO.images());
+        contract.addAnnexImages(contractDTO.images());
 
         return contract.saveContract();
     }
