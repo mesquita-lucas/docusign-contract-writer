@@ -44,7 +44,7 @@ public class ImageContainer {
             );
 
             Map<String, Float> newDimensions = scale(imageXObject);
-            Position whereToDraw = getDrawingPosition(imageXObject, newDimensions); //always in the center
+            Position whereToDraw = getDrawingPosition(newDimensions); //always in the center
 
             cs.drawImage(
                     imageXObject,
@@ -60,7 +60,7 @@ public class ImageContainer {
         }
     }
 
-    private Position getDrawingPosition(PDImageXObject imageXObject, Map<String, Float> newDimensions) {
+    private Position getDrawingPosition(Map<String, Float> newDimensions) {
         float imageWidth = newDimensions.get("width");
         float cellMiddlePoint = (float) (containerWidth + 140) / 2; //margins are 70 each
         int yValue = (692 - 203) - (203 * numberOfImagesAdded); //starting point, them populate other cells
