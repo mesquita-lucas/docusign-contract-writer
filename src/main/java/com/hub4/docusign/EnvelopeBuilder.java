@@ -12,7 +12,7 @@ public class EnvelopeBuilder {
     private static final Position consignorSigningPosition = new Position(74, 451); //first to show
     private static final Position consigneeSigningPosition = new Position(74, 581); //second to show
 
-    public static EnvelopeDefinition build(ContractDTO contractDTO, byte[] contractInBytes) throws IOException {
+    public static EnvelopeDefinition build(ContractDTO contractDTO, String encodedPDF) throws IOException {
         EnvelopeDefinition envelope = new EnvelopeDefinition();
         envelope.setEmailSubject("Contrato de consignação Hub4 para " + contractDTO.prodBrand() + " " + contractDTO.prodModel());
         envelope.setStatus("sent");
@@ -41,7 +41,6 @@ public class EnvelopeBuilder {
         envelope.setRecipients(recipients);
 
         Document document = new Document();
-        String encodedPDF = Base64.getEncoder().encodeToString(contractInBytes);
 
         document.setDocumentBase64(encodedPDF);
         document.setName("contrato-de-consignacao.pdf");

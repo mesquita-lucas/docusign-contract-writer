@@ -8,26 +8,31 @@ import com.hub4.dao.MockContractDAO;
 import com.hub4.dto.ContractDTO;
 import com.hub4.pdf.ContractBuilder;
 
-import java.io.*;
 import java.awt.Desktop;
+import java.io.IOException;
 import java.net.URI;
+import java.util.Base64;
 
 
-public class App {
-    static String DevCenterPage = "https://developers.docusign.com/platform/auth/consent";
+public class DocusignClient {
+    private final ConfigLoader config;
+    private final ContractDTO contractDTO;
+    private final String pdf;
 
-    public static void main(String[] args){
-        System.out.println(">> Entrou no App.main()");
+    public DocusignClient(ContractDTO dto, byte[] contract) throws IOException {
+        this.config = new ConfigLoader("/etc/secrets/app.config");
+        this.contractDTO = dto;
+        this.pdf = Base64.getEncoder().encodeToString(contract);
+    }
+
+    public void sendEnvelope(){
+        final String DevCenterPage = "https://developers.docusign.com/platform/auth/consent";
+        System.out.println(">> Entrou no DocusignClient");
+
         try
         {
-            ConfigLoader config = new ConfigLoader("/etc/secrets/app.config");
-
-            ContractDTO contractDTO = MockContractDAO.get();
-
             DocusignAuthenticator authenticator = DocusignAuthenticator.forDevEnvironment(config);
             AuthData auth = authenticator.authenticate();
-
-            byte[] pdf = ContractBuilder.build();
 
             EnvelopeDefinition envelope = EnvelopeBuilder.build(contractDTO, pdf);
 
@@ -38,10 +43,9 @@ public class App {
         } catch (ApiException e) {
 
             if(e.getMessage().contains("consent_required")) {
-                try
-                {
+                try {
                     String consentUrl = "https://account-d.docusign.com/oauth/auth?response_type=code&scope=impersonation%20signature"
-                            + "&client_id=" + new ConfigLoader("/etc/secrets/app.config").get("clientId")
+                            + "&client_id=" + config.get("clientId")
                             + "&redirect_uri=" + DevCenterPage;
 
                     Desktop.getDesktop().browse(URI.create(consentUrl));
@@ -52,8 +56,8 @@ public class App {
                 System.out.println("Erro de API: " + e.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage(), e);
+            System.out.println("Erro ao enviar o envelope: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 }

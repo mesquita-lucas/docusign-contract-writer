@@ -16,28 +16,26 @@ public class ContentLoader {
     private final ContractContents contents;
 
     public ContentLoader(ContractDTO dto) {
-        try (InputStream is = FormReceiverApplication.class.getClassLoader().getResourceAsStream("template.json"))
-        {
+        try (InputStream is = FormReceiverApplication.class.getClassLoader().getResourceAsStream("template.json")) {
             Objects.requireNonNull(is, "template not found");
 
             JSONParser parser = new JSONParser();
             JSONObject template = (JSONObject) parser.parse(new InputStreamReader(is));
 
-            String consignorID = template.get("consignorID").toString();
-            String productDetails = template.get("productDetails").toString();
-            String signatureDate = template.get("signatures").toString();
+            Map<String, String> placeholders = buildPlaceholders(dto);
+            for (Object key : template.keySet()) {
+                Object value = template.get(key);
 
-            List<Map<String, String>> storedPlaceholders = storePlaceholders(dto);
-
-            template.replace("consignorID", replacePlaceholders(consignorID, storedPlaceholders.get(0)));
-            template.replace("productDetails", replacePlaceholders(productDetails, storedPlaceholders.get(1)));
-            template.replace("signatureDate", replacePlaceholders(signatureDate, storedPlaceholders.get(2)));
+                if (value instanceof String strValue) {
+                    String replaced = replacePlaceholders(strValue, placeholders);
+                    template.put(key, replaced);
+                }
+            }
 
             this.contents = dtoFrom(template);
         } catch (Exception e) {
             System.out.println("Unable to load template");
-
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Erro ao carregar o template JSON", e); // [✔] mensagem mais clara
         }
     }
 
@@ -46,45 +44,34 @@ public class ContentLoader {
     }
 
     private String replacePlaceholders(String text, Map<String, String> placeholders) {
-        for(Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-            text = text.replace(placeholder.getKey(), placeholder.getValue());
+        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+            text = text.replace(entry.getKey(), entry.getValue());
         }
-
         return text;
     }
 
-    private List<Map<String, String>> storePlaceholders(ContractDTO dto) {
-        List<Map<String, String>> list = new ArrayList<>();
+    private Map<String, String> buildPlaceholders(ContractDTO dto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        Map<String, String> consignorIDPlaceholders = Map.of(
-                "{{email_consignante}}", dto.consignorEmail(),
-                "{{nome_consignante}}", dto.consignorName(),
-                "{{cpf_consignante}}", dto.consignorCPF()
-        );
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("{{email_consignante}}", dto.consignorEmail());
+        placeholders.put("{{nome_consignante}}", dto.consignorName());
+        placeholders.put("{{cpf_consignante}}", dto.consignorCPF());
 
-        Map<String, String> productDetailsPlaceholders = Map.of(
-                "{{prod_tipo}}", dto.prodType(),
-                "{{prod_marca}}", dto.prodBrand(),
-                "{{prod_modelo}}", dto.prodModel(),
-                "{{prod_ano}}", dto.prodYear(),
-                "{{prod_estado_conservacao}}", dto.conservationState(),
-                "{{prod_acessorios}}", dto.prodAccessories(),
-                "{{prod_valor_venda}}", dto.prodSellValue()
-        );
+        placeholders.put("{{prod_tipo}}", dto.prodType());
+        placeholders.put("{{prod_marca}}", dto.prodBrand());
+        placeholders.put("{{prod_modelo}}", dto.prodModel());
+        placeholders.put("{{prod_ano}}", dto.prodYear());
+        placeholders.put("{{prod_estado_conservacao}}", dto.conservationState());
+        placeholders.put("{{prod_acessorios}}", dto.prodAccessories());
+        placeholders.put("{{prod_valor_venda}}", dto.prodSellValue());
 
-        Map<String, String> signatureDatePlaceholders = Map.of(
-                "{{data}}", LocalDate.now().format(formatter)
-        );
+        placeholders.put("{{data}}", LocalDate.now().format(formatter));
 
-        list.add(consignorIDPlaceholders);
-        list.add(productDetailsPlaceholders);
-        list.add(signatureDatePlaceholders);
-
-        return list;
+        return placeholders;
     }
 
-    private ContractContents dtoFrom(JSONObject json){
+    private ContractContents dtoFrom(JSONObject json) {
         return new ContractContents(
                 json.get("contractTitle").toString(),
                 json.get("consignorID").toString(),

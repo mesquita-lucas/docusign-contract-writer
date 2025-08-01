@@ -1,6 +1,6 @@
 package com.hub4.controller;
 
-import com.hub4.docusign.App;
+import com.hub4.docusign.DocusignClient;
 import com.hub4.dto.MessageDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,7 @@ public class TestController {
     public ResponseEntity<String> test(@RequestBody MessageDTO dto) throws IOException {
         System.out.println("Mensagem recebida: " + dto.text());
 
-        App.main(null);
+        DocusignClient.main(null);
         return ResponseEntity.ok("mensagem recebida com sucesso");
     }
 }

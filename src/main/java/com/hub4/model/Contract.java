@@ -1,6 +1,7 @@
 package com.hub4.model;
 
 import com.hub4.dto.ContractDTO;
+import com.hub4.dto.ImageDTO;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -22,16 +23,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class Contract {
-    private final ContractDTO contractDTO;
-    private final ContractContents contractContents;
     private byte[] documentInBytes;
     private final Document document;
     private final List<Section> sections;
 
-    public Contract(ContractDTO contractDTO, ContractContents contractContents) {
-        this.contractDTO = contractDTO;
-        this.contractContents = contractContents;
-
+    public Contract(ContractContents contractContents) {
         this.document = new Document(70, 70, 100, 50);
         this.sections = loadSectionsList(contractContents);
     }
@@ -55,7 +51,7 @@ public class Contract {
         }
     }
 
-    public void AddHeader() throws IOException {
+    public void addHeader() throws IOException {
         final int logoSideSize = 50;
         final String logoPath = "HUB4-preset-logos-15.jpg";
         final Position logoPosition = new Position(30, 775);
@@ -87,19 +83,18 @@ public class Contract {
         }
     }
 
-    public void AddAnnexImages(){
+    public void addAnnexImages(List<ImageDTO> images){
 
     }
 
-    private PDImageXObject loadImage(String imageBase64, PDDocument document) throws IOException {
-        try (
-                InputStream image = Contract.class.getClassLoader().getResourceAsStream(imageBase64)
-        ){
-            Objects.requireNonNull(image, "Unable to load image from classpath; image is null.");
-            byte[] imageBytes = Base64.getDecoder().decode(image.readAllBytes());
+    public byte[] saveContract(){
+        return documentInBytes;
+    }
 
-            return PDImageXObject.createFromByteArray(document, imageBytes, null);
-        }
+    private PDImageXObject loadImage(String imageBase64, PDDocument document) throws IOException {
+        byte[] imageBytes = Base64.getDecoder().decode(imageBase64);
+
+        return PDImageXObject.createFromByteArray(document, imageBytes, null);
     }
 
     private void save(Document document) throws IOException {
