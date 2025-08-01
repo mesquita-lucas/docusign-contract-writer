@@ -47,6 +47,11 @@ public class ContentLoader {
 
     private String replacePlaceholders(String text, Map<String, String> placeholders) {
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+            if (entry.getValue() == null) {
+                System.out.println("Valor nulo para placeholder: " + entry.getKey());
+            } else {
+                System.out.println("Substituindo " + entry.getKey() + " por: " + entry.getValue());
+            }
             text = text.replace(entry.getKey(), entry.getValue());
         }
         return text;
@@ -59,7 +64,6 @@ public class ContentLoader {
         placeholders.put("{{email_consignante}}", dto.consignorEmail());
         placeholders.put("{{nome_consignante}}", dto.consignorName());
         placeholders.put("{{cpf_consignante}}", dto.consignorCPF());
-
         placeholders.put("{{prod_tipo}}", dto.prodType());
         placeholders.put("{{prod_marca}}", dto.prodBrand());
         placeholders.put("{{prod_modelo}}", dto.prodModel());
@@ -67,8 +71,10 @@ public class ContentLoader {
         placeholders.put("{{prod_estado_conservacao}}", dto.conservationState());
         placeholders.put("{{prod_acessorios}}", dto.prodAccessories());
         placeholders.put("{{prod_valor_venda}}", dto.prodSellValue());
-
         placeholders.put("{{data}}", LocalDate.now().format(formatter));
+
+        System.out.println("Placeholders gerados:");
+        placeholders.forEach((k, v) -> System.out.println(k + " = " + v));
 
         return placeholders;
     }
