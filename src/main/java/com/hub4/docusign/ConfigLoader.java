@@ -12,7 +12,7 @@ public class ConfigLoader {
         properties = new Properties();
 
         try(
-                InputStream is = new FileInputStream(configPath);
+                InputStream is = new FileInputStream(configPath)
         ){
 
             properties.load(is);

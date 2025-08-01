@@ -1,10 +1,7 @@
 package com.hub4.model;
 
-import com.hub4.dto.ContractDTO;
 import com.hub4.dto.ImageDTO;
-import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -14,7 +11,6 @@ import rst.pdfbox.layout.elements.Paragraph;
 import rst.pdfbox.layout.text.BaseFont;
 import rst.pdfbox.layout.text.Position;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +28,6 @@ public class Contract {
         this.sections = loadSectionsList(contractContents);
     }
 
-    //todo: ideia para fazer dps: Wrapper em Document com extends
     public void writeContract(){
         sections.forEach(section -> {
             try {
@@ -83,9 +78,10 @@ public class Contract {
         }
     }
 
-    public void addAnnexImages(List<ImageDTO> images){
+    /*public void addAnnexImages(List<ImageDTO> images){
 
     }
+     */
 
     public byte[] saveContract(){
         return documentInBytes;

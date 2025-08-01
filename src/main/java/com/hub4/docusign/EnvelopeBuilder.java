@@ -5,7 +5,6 @@ import com.hub4.dto.ContractDTO;
 import rst.pdfbox.layout.text.Position;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 public class EnvelopeBuilder {
