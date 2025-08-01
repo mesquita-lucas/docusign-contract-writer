@@ -24,14 +24,10 @@ public class FormController {
             @RequestBody ContractDTO formData,
             @RequestHeader(value = "x-api-key", required = false) String apiKey
     ) throws IOException {
-        System.out.println("Request received for form data");
         System.out.println(formData.toString());
 
         ContractHandler contractHandler = new ContractHandler(formData);
         contractHandler.handleContract();
-
-        System.out.println("Contract received");
-
 
         return ResponseEntity.ok().body(formData.toString());
     }
