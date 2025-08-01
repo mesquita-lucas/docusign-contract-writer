@@ -20,21 +20,17 @@ public class ImageContainer {
     private int numberOfImagesAdded;
 
     private final PDDocument document;
-    private final PDPage page;
 
-    public ImageContainer(PDDocument document, PDPage page) {
+    private final PDPageContentStream cs;
+
+    public ImageContainer(PDDocument document, PDPageContentStream cs) {
         this.document = document;
-        this.page = page;
+        this.cs = cs;
         this.numberOfImagesAdded = 0;
     }
 
     public void addImage(ImageDTO image) {
-        try(PDPageContentStream cs = new PDPageContentStream(
-                document,
-                page,
-                PDPageContentStream.AppendMode.APPEND,
-                true
-        )){
+        try {
             byte[] imageInBytes = Base64.getDecoder().decode(image.imageBase64());
 
             PDImageXObject imageXObject = PDImageXObject.createFromByteArray(
@@ -44,7 +40,7 @@ public class ImageContainer {
             );
 
             Map<String, Float> newDimensions = scale(imageXObject);
-            Position whereToDraw = getDrawingPosition(newDimensions); //always in the center
+            Position whereToDraw = getDrawingPosition(newDimensions);
 
             cs.drawImage(
                     imageXObject,
@@ -56,7 +52,7 @@ public class ImageContainer {
 
             numberOfImagesAdded++;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erro ao desenhar imagem: " + e.getMessage());
         }
     }
 

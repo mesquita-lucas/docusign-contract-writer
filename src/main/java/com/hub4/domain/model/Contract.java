@@ -81,7 +81,9 @@ public class Contract {
     }
 
     public void addAnnexImages(List<ImageDTO> images) throws IOException {
-        try(PDDocument pDocument = PDDocument.load(documentInBytes)){
+        try(
+                PDDocument pDocument = PDDocument.load(documentInBytes);
+        ){
             AnnexImageDrawer drawer = new AnnexImageDrawer(pDocument);
 
             drawer.draw(images);
