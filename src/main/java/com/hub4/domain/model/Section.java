@@ -1,4 +1,4 @@
-package com.hub4.model;
+package com.hub4.domain.model;
 
 import rst.pdfbox.layout.text.Alignment;
 import rst.pdfbox.layout.text.BaseFont;

@@ -4,7 +4,7 @@ import com.docusign.esign.api.EnvelopesApi;
 import com.docusign.esign.client.ApiException;
 import com.docusign.esign.model.EnvelopeDefinition;
 import com.docusign.esign.model.EnvelopeSummary;
-import com.hub4.dto.ContractDTO;
+import com.hub4.api.dto.ContractDTO;
 
 import java.awt.Desktop;
 import java.io.IOException;

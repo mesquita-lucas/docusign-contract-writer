@@ -1,8 +1,8 @@
-package com.hub4.json;
+package com.hub4.domain.json;
 
 import com.hub4.FormReceiverApplication;
-import com.hub4.dto.ContractDTO;
-import com.hub4.model.ContractContents;
+import com.hub4.api.dto.ContractDTO;
+import com.hub4.domain.model.ContractContents;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,7 +10,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ContentLoader {
     private final ContractContents contents;

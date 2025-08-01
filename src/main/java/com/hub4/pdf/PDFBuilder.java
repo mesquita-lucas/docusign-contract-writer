@@ -1,9 +1,9 @@
 package com.hub4.pdf;
 
-import com.hub4.dto.ContractDTO;
-import com.hub4.json.ContentLoader;
-import com.hub4.model.Contract;
-import com.hub4.model.ContractContents;
+import com.hub4.api.dto.ContractDTO;
+import com.hub4.domain.json.ContentLoader;
+import com.hub4.domain.model.Contract;
+import com.hub4.domain.model.ContractContents;
 
 import java.io.IOException;
 

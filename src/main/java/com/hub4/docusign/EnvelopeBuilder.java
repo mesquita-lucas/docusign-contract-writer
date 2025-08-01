@@ -1,7 +1,7 @@
 package com.hub4.docusign;
 
 import com.docusign.esign.model.*;
-import com.hub4.dto.ContractDTO;
+import com.hub4.api.dto.ContractDTO;
 import rst.pdfbox.layout.text.Position;
 
 import java.io.IOException;

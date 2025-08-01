@@ -1,7 +1,7 @@
-package com.hub4.controller;
+package com.hub4.service;
 
 import com.hub4.docusign.DocusignClient;
-import com.hub4.dto.ContractDTO;
+import com.hub4.api.dto.ContractDTO;
 import com.hub4.pdf.PDFBuilder;
 
 import java.io.IOException;

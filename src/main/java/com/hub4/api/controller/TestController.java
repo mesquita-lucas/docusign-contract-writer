@@ -1,12 +1,10 @@
-package com.hub4.controller;
+package com.hub4.api.controller;
 
-import com.hub4.dto.MessageDTO;
+import com.hub4.api.dto.MessageDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 
 @RestController
 public class TestController {

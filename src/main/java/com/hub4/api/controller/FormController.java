@@ -1,6 +1,8 @@
-package com.hub4.controller;
+package com.hub4.api.controller;
 
-import com.hub4.dto.ContractDTO;
+import com.hub4.api.security.ApiKeyValidator;
+import com.hub4.api.dto.ContractDTO;
+import com.hub4.service.ContractHandler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

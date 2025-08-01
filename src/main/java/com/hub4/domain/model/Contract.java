@@ -1,6 +1,5 @@
-package com.hub4.model;
+package com.hub4.domain.model;
 
-import com.hub4.dto.ImageDTO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;

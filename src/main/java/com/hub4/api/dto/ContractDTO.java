@@ -1,4 +1,4 @@
-package com.hub4.dto;
+package com.hub4.api.dto;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.hub4.dto;
+package com.hub4.api.dto;
 
 public record ImageDTO(
         String imageBase64,
