@@ -18,7 +18,7 @@ public class ContentLoader {
     private final ContractContents contents;
 
     public ContentLoader(ContractDTO dto) {
-        try (InputStream is = FormReceiverApplication.class.getClassLoader().getResourceAsStream("template.json")) {
+        try (InputStream is = ContentLoader.class.getClassLoader().getResourceAsStream("template.json")) {
             Objects.requireNonNull(is, "template not found");
 
             JSONParser parser = new JSONParser();
@@ -37,7 +37,7 @@ public class ContentLoader {
             this.contents = dtoFrom(template);
         } catch (Exception e) {
             System.out.println("Unable to load template");
-            throw new RuntimeException("Erro ao carregar o template JSON", e); // [✔] mensagem mais clara
+            throw new RuntimeException("Erro ao carregar o template JSON", e);
         }
     }
 
