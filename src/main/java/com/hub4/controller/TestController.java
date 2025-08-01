@@ -16,7 +16,7 @@ public class TestController {
     public ResponseEntity<String> test(@RequestBody MessageDTO dto) throws IOException {
         System.out.println("Mensagem recebida: " + dto.text());
 
-        DocusignClient.main(null);
+        //DocusignClient.main(null);
         return ResponseEntity.ok("mensagem recebida com sucesso");
     }
 }
