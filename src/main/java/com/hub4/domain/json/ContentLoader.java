@@ -47,18 +47,13 @@ public class ContentLoader {
 
     private String replacePlaceholders(String text, Map<String, String> placeholders) {
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-            if (entry.getValue() == null) {
-                System.out.println("Valor nulo para placeholder: " + entry.getKey());
-            } else {
-                System.out.println("Substituindo " + entry.getKey() + " por: " + entry.getValue());
-            }
             text = text.replace(entry.getKey(), entry.getValue());
         }
         return text;
     }
 
     private Map<String, String> buildPlaceholders(ContractDTO dto) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("{{email_consignante}}", dto.consignorEmail());

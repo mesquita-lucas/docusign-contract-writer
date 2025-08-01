@@ -25,7 +25,6 @@ public class DocusignClient {
 
     public void sendEnvelope(){
         final String DevCenterPage = "https://developers.docusign.com/platform/auth/consent";
-        System.out.println(">> Entrou no DocusignClient");
 
         try
         {
