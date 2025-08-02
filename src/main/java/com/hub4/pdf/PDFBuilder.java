@@ -22,8 +22,8 @@ public class PDFBuilder {
 
     public byte[] buildContract() throws IOException {
         contract.writeContract();
-        contract.addAnnexImages(contractDTO.images());
         contract.addHeader();
+        contract.addAnnexImages(contractDTO.images());
 
         return contract.saveContract();
     }

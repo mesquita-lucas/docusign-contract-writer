@@ -5,8 +5,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import rst.pdfbox.layout.elements.ImageElement;
 import rst.pdfbox.layout.text.Position;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
@@ -37,6 +39,10 @@ public class PDFImageRenderer {
         )) {
             byte[] imageInBytes = Base64.getDecoder().decode(image.imageBase64());
 
+            ByteArrayInputStream bais = new ByteArrayInputStream(imageInBytes);
+
+            ImageElement imageElement = new ImageElement(bais);
+
             PDImageXObject imageXObject = PDImageXObject.createFromByteArray(
                     document,
                     imageInBytes,
@@ -50,13 +56,16 @@ public class PDFImageRenderer {
 
             System.out.println("Scaling done. Drawing image");
 
-            cs.drawImage(
-                    imageXObject,
-                    whereToDraw.getX(),
-                    whereToDraw.getY(),
-                    newDimensions.get("width"),
-                    newDimensions.get("height")
-            );
+//            cs.drawImage(
+//                    imageXObject,
+//                    whereToDraw.getX(),
+//                    whereToDraw.getY(),
+//                    newDimensions.get("width"),
+//                    newDimensions.get("height")
+//            );
+
+            imageElement.draw(document, cs, whereToDraw, null);
+            System.out.println("Image Drawn!");
 
             numberOfImagesAdded++;
         } catch (IOException e) {
@@ -73,7 +82,7 @@ public class PDFImageRenderer {
         float cellMiddlePoint = (float) (CONTAINER_WIDTH + 140) / 2; //margins are 70 each
         int containerTopPosition = 692;
 
-        int yValue = (containerTopPosition - CELL_HEIGHT) - (CELL_HEIGHT * numberOfImagesAdded);
+        int yValue = containerTopPosition - (CELL_HEIGHT * numberOfImagesAdded);
 
         return new Position(cellMiddlePoint - (imageWidth / 2), yValue);
     }
