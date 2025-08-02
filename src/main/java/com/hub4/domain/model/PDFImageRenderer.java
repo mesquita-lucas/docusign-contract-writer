@@ -39,10 +39,6 @@ public class PDFImageRenderer {
         )) {
             byte[] imageInBytes = Base64.getDecoder().decode(image.imageBase64());
 
-            ByteArrayInputStream bais = new ByteArrayInputStream(imageInBytes);
-
-            ImageElement imageElement = new ImageElement(bais);
-
             PDImageXObject imageXObject = PDImageXObject.createFromByteArray(
                     document,
                     imageInBytes,
@@ -56,15 +52,14 @@ public class PDFImageRenderer {
 
             System.out.println("Scaling done. Drawing image");
 
-//            cs.drawImage(
-//                    imageXObject,
-//                    whereToDraw.getX(),
-//                    whereToDraw.getY(),
-//                    newDimensions.get("width"),
-//                    newDimensions.get("height")
-//            );
+            cs.drawImage(
+                    imageXObject,
+                    whereToDraw.getX(),
+                    whereToDraw.getY(),
+                    newDimensions.get("width"),
+                    newDimensions.get("height")
+            );
 
-            imageElement.draw(document, cs, whereToDraw, null);
             System.out.println("Image Drawn!");
 
             numberOfImagesAdded++;

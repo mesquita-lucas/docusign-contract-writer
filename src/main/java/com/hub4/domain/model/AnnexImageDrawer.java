@@ -16,7 +16,7 @@ public class AnnexImageDrawer {
         PDFImageRenderer renderer = new PDFImageRenderer(document, 3);
 
         for (ImageDTO image : images) {
-            if (!renderer.isFull()) {
+            if (renderer.isFull()) {
                 renderer.setPageIndex(4);
             }
 
