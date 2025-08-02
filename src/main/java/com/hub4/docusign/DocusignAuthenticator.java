@@ -37,7 +37,7 @@ public class DocusignAuthenticator {
     }
 
     public AuthData authenticate() throws IOException, ApiException {
-        InputStream keyInputStream = new FileInputStream("/etc/secrets/private.key");
+        InputStream keyInputStream = new FileInputStream("secrets/private.key");
 
         byte[] privateKey = keyInputStream.readAllBytes();
 

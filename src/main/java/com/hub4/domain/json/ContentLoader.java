@@ -1,6 +1,5 @@
 package com.hub4.domain.json;
 
-import com.hub4.FormReceiverApplication;
 import com.hub4.api.dto.ContractDTO;
 import com.hub4.domain.model.ContractContents;
 import org.json.simple.JSONObject;
