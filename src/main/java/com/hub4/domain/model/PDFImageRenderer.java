@@ -77,7 +77,7 @@ public class PDFImageRenderer {
         float cellMiddlePoint = (float) (CONTAINER_WIDTH + 140) / 2; //margins are 70 each
         int containerTopPosition = 692;
 
-        int yValue = containerTopPosition - (CELL_HEIGHT * numberOfImagesAdded);
+        int yValue = (containerTopPosition - CELL_HEIGHT) - (CELL_HEIGHT * numberOfImagesAdded);
 
         return new Position(cellMiddlePoint - (imageWidth / 2), yValue);
     }
