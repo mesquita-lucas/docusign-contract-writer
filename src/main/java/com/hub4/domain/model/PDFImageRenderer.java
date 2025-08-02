@@ -28,7 +28,8 @@ public class PDFImageRenderer {
     }
 
     public void addImage(ImageDTO image) {
-        try (PDPageContentStream cs = new PDPageContentStream(
+        try (
+                PDPageContentStream cs = new PDPageContentStream(
                 document,
                 document.getPage(pageIndex),
                 AppendMode.APPEND,
@@ -42,8 +43,12 @@ public class PDFImageRenderer {
                     image.imageName()
             );
 
+            System.out.println("Image Loaded!");
+
             Map<String, Float> newDimensions = scale(imageXObject);
             Position whereToDraw = getDrawingPosition(newDimensions);
+
+            System.out.println("Scaling done. Drawing image");
 
             cs.drawImage(
                     imageXObject,

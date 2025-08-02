@@ -13,14 +13,14 @@ public class AnnexImageDrawer {
     }
 
     public void draw(List<ImageDTO> images){
-        PDFImageRenderer container = new PDFImageRenderer(document, 3);
+        PDFImageRenderer renderer = new PDFImageRenderer(document, 3);
 
         for (ImageDTO image : images) {
-            if (!container.isFull()) {
-                container.setPageIndex(4);
+            if (!renderer.isFull()) {
+                renderer.setPageIndex(4);
             }
 
-            container.addImage(image);
+            renderer.addImage(image);
         }
     }
 }
