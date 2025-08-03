@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Objects;
 
 public class DocusignAuthenticator {
     private final ConfigLoader config;
@@ -37,8 +38,9 @@ public class DocusignAuthenticator {
     }
 
     public AuthData authenticate() throws IOException, ApiException {
-        InputStream keyInputStream = new FileInputStream("secrets/private.key");
+        InputStream keyInputStream = DocusignAuthenticator.class.getClassLoader().getResourceAsStream("secrets/private.key");
 
+        Objects.requireNonNull(keyInputStream, "Private.key is null");
         byte[] privateKey = keyInputStream.readAllBytes();
 
         OAuthToken token = apiClient.requestJWTUserToken(
