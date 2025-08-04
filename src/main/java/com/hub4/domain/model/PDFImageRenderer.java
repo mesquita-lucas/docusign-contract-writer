@@ -17,62 +17,49 @@ public class PDFImageRenderer {
     private final int CELL_HEIGHT = CONTAINER_HEIGHT / 3;
 
     private int numberOfImagesAdded;
-
     private final PDDocument document;
-    private int pageIndex;
 
-    public PDFImageRenderer(PDDocument document, int pageIndex) {
+    public PDFImageRenderer(PDDocument document) {
         this.document = document;
         this.numberOfImagesAdded = 0;
-        this.pageIndex = pageIndex;
     }
 
-    public void addImage(ImageDTO image) {
-        try (
-                PDPageContentStream cs = new PDPageContentStream(
+    public void drawImageOnStream(PDPageContentStream cs, ImageDTO image) throws IOException {
+        byte[] imageInBytes = Base64.getDecoder().decode(image.imageBase64());
+
+        PDImageXObject imageXObject = PDImageXObject.createFromByteArray(
                 document,
-                document.getPage(pageIndex),
-                AppendMode.APPEND,
-                true
-        )) {
-            byte[] imageInBytes = Base64.getDecoder().decode(image.imageBase64());
+                imageInBytes,
+                image.imageName()
+        );
 
-            PDImageXObject imageXObject = PDImageXObject.createFromByteArray(
-                    document,
-                    imageInBytes,
-                    image.imageName()
-            );
+        System.out.println("Image Loaded!");
 
-            System.out.println("Image Loaded!");
+        Map<String, Float> newDimensions = scale(imageXObject);
+        Position whereToDraw = getDrawingPosition(newDimensions);
 
-            Map<String, Float> newDimensions = scale(imageXObject);
-            Position whereToDraw = getDrawingPosition(newDimensions);
+        System.out.println("Scaling done. Drawing image");
 
-            System.out.println("Scaling done. Drawing image");
+        cs.drawImage(
+                imageXObject,
+                whereToDraw.getX(),
+                whereToDraw.getY(),
+                newDimensions.get("width"),
+                newDimensions.get("height")
+        );
 
-            cs.drawImage(
-                    imageXObject,
-                    whereToDraw.getX(),
-                    whereToDraw.getY(),
-                    newDimensions.get("width"),
-                    newDimensions.get("height")
-            );
+        System.out.println("Image Drawn!");
 
-            System.out.println("Image Drawn!");
-
-            numberOfImagesAdded++;
-        } catch (IOException e) {
-            System.out.println("Erro ao desenhar imagem: " + e.getMessage());
-        }
+        numberOfImagesAdded++;
     }
 
-    public void setPageIndex(int pageIndex){
-        this.pageIndex = pageIndex;
+    public void resetImageCount(){
         this.numberOfImagesAdded = 0;
     }
+
     private Position getDrawingPosition(Map<String, Float> newDimensions) {
         float imageWidth = newDimensions.get("width");
-        float cellMiddlePoint = (float) (CONTAINER_WIDTH + 140) / 2; //margins are 70 each
+        float cellMiddlePoint = (float) (CONTAINER_WIDTH + 140) / 2; // margins are 70 each
         int containerTopPosition = 692;
 
         int yValue = (containerTopPosition - CELL_HEIGHT) - (CELL_HEIGHT * numberOfImagesAdded);
