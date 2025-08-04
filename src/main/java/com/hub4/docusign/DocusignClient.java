@@ -11,14 +11,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Base64;
 
-
 public class DocusignClient {
     private final ConfigLoader config;
     private final ContractDTO contractDTO;
     private final String pdf;
 
     public DocusignClient(ContractDTO dto, byte[] contract) throws IOException {
-        this.config = new ConfigLoader("/etc/secrets/app.config");
+        this.config = new ConfigLoader("secrets/app.config");
         this.contractDTO = dto;
         this.pdf = Base64.getEncoder().encodeToString(contract);
     }

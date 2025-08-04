@@ -1,6 +1,5 @@
 package com.hub4.docusign;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -12,7 +11,7 @@ public class ConfigLoader {
         properties = new Properties();
 
         try(
-                InputStream is = new FileInputStream(configPath)
+                InputStream is = ConfigLoader.class.getClassLoader().getResourceAsStream(configPath)
         ){
 
             properties.load(is);
