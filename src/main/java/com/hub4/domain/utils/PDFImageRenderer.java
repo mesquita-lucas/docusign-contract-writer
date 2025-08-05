@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import rst.pdfbox.layout.text.Position;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class PDFImageRenderer {
                 newDimensions.get("height")
         );
 
-        System.out.println("Image Drawn!");
+        System.out.println("Image Drawn and saved!");
 
         numberOfImagesAdded++;
     }
