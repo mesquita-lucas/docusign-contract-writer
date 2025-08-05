@@ -1,4 +1,4 @@
-package com.hub4.domain.model;
+package com.hub4.domain.utils;
 
 import com.hub4.api.dto.ImageDTO;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -6,17 +6,20 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
 public class AnnexImageDrawer {
     private final PDDocument document;
+    private final List<ImageDTO> images;
 
-    public AnnexImageDrawer(PDDocument document) {
-        this.document = document;
+    public AnnexImageDrawer(byte[] pdf, List<ImageDTO> images) throws IOException {
+        this.document = PDDocument.load(pdf);
+        this.images = images;
     }
 
-    public void draw(List<ImageDTO> images){
+    public void draw(){
         if (images == null || images.isEmpty()) return;
 
         PDFImageRenderer renderer = new PDFImageRenderer(document);
@@ -48,8 +51,9 @@ public class AnnexImageDrawer {
 
                 renderer.drawImageOnStream(contentStream, image);
             }
-        } catch (IOException e){
-            System.out.println("Error while drawing images: " + e.getMessage());
+        } catch (Exception e){
+            System.out.println("Erro ao desenhar imagem no PDF: " + e.getMessage());
+            e.printStackTrace();
         } finally {
             if (contentStream != null){
                 try
@@ -59,6 +63,13 @@ public class AnnexImageDrawer {
                     System.out.println(e.getMessage());
                 }
             }
+        }
+    }
+
+    public byte[] save() throws IOException {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
+            document.save(baos);
+            return baos.toByteArray();
         }
     }
 }

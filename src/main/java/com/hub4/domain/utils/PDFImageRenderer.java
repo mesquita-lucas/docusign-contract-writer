@@ -1,4 +1,4 @@
-package com.hub4.domain.model;
+package com.hub4.domain.utils;
 
 import com.hub4.api.dto.ImageDTO;
 import org.apache.pdfbox.pdmodel.PDDocument;
