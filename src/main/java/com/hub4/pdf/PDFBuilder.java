@@ -50,7 +50,7 @@ public class PDFBuilder {
         return this;
     }
 
-    public byte[] build() throws IOException {
+    public byte[] build(){
         return pdf;
     }
 
