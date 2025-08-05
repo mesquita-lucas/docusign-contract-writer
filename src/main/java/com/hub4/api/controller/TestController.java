@@ -1,8 +1,7 @@
 package com.hub4.api.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -11,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @RestController
 public class TestController {
 
-    @PostMapping("/test")
+    @GetMapping("/test")
     public ResponseEntity<String> test() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
