@@ -1,19 +1,24 @@
 package com.hub4.api.controller;
 
-import com.hub4.api.dto.MessageDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @RestController
 public class TestController {
 
     @PostMapping("/test")
-    public ResponseEntity<String> test(@RequestBody MessageDTO dto) {
-        System.out.println("Mensagem recebida: " + dto.text());
+    public ResponseEntity<String> test() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
 
-        //DocusignClient.main(null);
-        return ResponseEntity.ok("mensagem recebida com sucesso");
+        System.out.println("LOG: Servidor acessado em: " + now.format(formatter));
+        String responseBody = "<h1>Servidor acessado!</h1>" +
+                "<p>Requisição recebida com sucesso em: " + now.format(formatter) + "</p>";
+        return ResponseEntity.ok(responseBody);
     }
 }
