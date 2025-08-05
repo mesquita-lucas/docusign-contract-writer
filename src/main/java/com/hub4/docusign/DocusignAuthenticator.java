@@ -5,8 +5,6 @@ import com.docusign.esign.client.ApiException;
 import com.docusign.esign.client.auth.OAuth.UserInfo;
 import com.docusign.esign.client.auth.OAuth.OAuthToken;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;

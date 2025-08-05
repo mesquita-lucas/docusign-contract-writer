@@ -7,4 +7,3 @@ public record AuthData(
     String accessToken,
     String accountId
 ) {}
-
