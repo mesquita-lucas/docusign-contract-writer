@@ -14,8 +14,6 @@ public class PDFImageRenderer {
     private final float CONTAINER_HEIGHT = 609f;
     private final float CONTAINER_WIDTH = 385f;
     private final float CELL_HEIGHT = CONTAINER_HEIGHT / 3;
-    private final float PAGE_MARGIN_X = 70f;
-    private final float IMAGE_MARGIN = 15f;
 
     private int numberOfImagesAdded;
     private final PDDocument document;
@@ -60,9 +58,11 @@ public class PDFImageRenderer {
 
     private Position getDrawingPosition(Map<String, Float> newDimensions) {
         float imageWidth = newDimensions.get("width");
+        final float PAGE_MARGIN_X = 70f;
         float cellMiddlePoint = PAGE_MARGIN_X + (CONTAINER_WIDTH / 2);
         int containerTopPosition = 692;
 
+        final float IMAGE_MARGIN = 15f;
         float yValue = (containerTopPosition - CELL_HEIGHT)
                 - (CELL_HEIGHT * numberOfImagesAdded)
                 - (IMAGE_MARGIN * numberOfImagesAdded);

@@ -7,7 +7,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 
 import java.io.*;
-import java.util.Base64;
 import java.util.List;
 
 public class AnnexImageDrawer {
@@ -72,35 +71,6 @@ public class AnnexImageDrawer {
             document.close();
 
             return baos.toByteArray();
-        }
-    }
-
-    private void saveImageForDebugging(ImageDTO image, int index) {
-        try {
-            // Garante que a pasta de debug exista
-            File debugDir = new File("debug_images");
-            if (!debugDir.exists()) {
-                debugDir.mkdirs();
-            }
-
-            // Decodifica a string Base64 para bytes
-            byte[] imageInBytes = Base64.getDecoder().decode(image.imageBase64());
-
-            // Cria um nome de arquivo único para evitar sobreposições
-            String fileName = index + "_" + image.imageName();
-            File outputFile = new File(debugDir, fileName);
-
-            // Usa try-with-resources para garantir que o FileOutputStream seja fechado
-            try (FileOutputStream fos = new FileOutputStream(outputFile)) {
-                fos.write(imageInBytes);
-            }
-            System.out.println("Imagem de debug salva em: " + outputFile.getAbsolutePath());
-
-        } catch (IOException e) {
-            System.err.println("ERRO ao salvar imagem de debug '" + image.imageName() + "': " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            // Isso acontece se a string Base64 for inválida
-            System.err.println("ERRO: A string Base64 para a imagem '" + image.imageName() + "' é inválida. " + e.getMessage());
         }
     }
 }

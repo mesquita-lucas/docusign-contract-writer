@@ -7,7 +7,6 @@ import com.hub4.domain.model.ContractContents;
 import com.hub4.domain.utils.ContractWriter;
 import com.hub4.domain.utils.LogoStamper;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PDFBuilder {
@@ -52,33 +51,5 @@ public class PDFBuilder {
 
     public byte[] build(){
         return pdf;
-    }
-
-    public byte[] buildForDebug() throws IOException {
-        System.out.println("--- INICIANDO PROCESSO DE BUILD PARA DEBUG ---");
-
-        this.write();
-        saveForDebug("1_texto_escrito.pdf", this.pdf);
-
-        this.addAnnexImages();
-        saveForDebug("2_com_anexo.pdf", this.pdf);
-
-        this.stampLogo();
-        saveForDebug("3_final_com_logo.pdf", this.pdf);
-
-        System.out.println("--- PROCESSO DE BUILD DE DEBUG FINALIZADO ---");
-        return this.pdf;
-    }
-
-    private void saveForDebug(String nomeArquivo, byte[] dados) throws IOException {
-        if (dados == null) {
-            System.out.println("AVISO: Dados para salvar '" + nomeArquivo + "' estão nulos.");
-            return;
-        }
-
-        try (FileOutputStream fos = new FileOutputStream(nomeArquivo)) {
-            fos.write(dados);
-        }
-        System.out.println("Salvo arquivo de debug: " + nomeArquivo);
     }
 }
