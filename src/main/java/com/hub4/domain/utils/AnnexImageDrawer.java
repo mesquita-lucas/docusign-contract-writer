@@ -3,33 +3,32 @@ package com.hub4.domain.utils;
 import com.hub4.api.dto.ImageDTO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.*;
-import java.util.Base64;
 import java.util.List;
 
 public class AnnexImageDrawer {
     private final PDDocument document;
     private final List<ImageDTO> images;
 
-    public AnnexImageDrawer(byte[] pdf, List<ImageDTO> images) throws IOException {
-        this.document = PDDocument.load(pdf);
+    public AnnexImageDrawer(List<ImageDTO> images) throws IOException {
+        this.document = createAnnexDocument();
         this.images = images;
     }
 
-    public void draw(){
+    public void draw() {
         if (images == null || images.isEmpty()) return;
 
         PDFImageRenderer renderer = new PDFImageRenderer(document);
         PDPageContentStream contentStream = null;
 
-        int currentPageIndex = 3;
+        int currentPageIndex = 0;
 
-        try
-        {
+        try {
             for(ImageDTO image : images){
                 if(renderer.isFull()){
                     if(contentStream != null){
@@ -50,17 +49,13 @@ public class AnnexImageDrawer {
                     );
                 }
 
-                saveImageForDebugging(image, currentPageIndex);
-
                 renderer.drawImageOnStream(contentStream, image);
             }
         } catch (Exception e){
             System.out.println("Erro ao desenhar imagem no PDF: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             if (contentStream != null){
-                try
-                {
+                try {
                     contentStream.close();
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
@@ -72,36 +67,42 @@ public class AnnexImageDrawer {
     public byte[] save() throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
             document.save(baos);
+            document.close();
+
             return baos.toByteArray();
         }
     }
 
-    private void saveImageForDebugging(ImageDTO image, int index) {
-        try {
-            // Garante que a pasta de debug exista
-            File debugDir = new File("debug_images");
-            if (!debugDir.exists()) {
-                debugDir.mkdirs();
-            }
+    private PDDocument createAnnexDocument() throws IOException {
+        int numberOfImages = images.size();
+        PDDocument annexDocument = new PDDocument();
 
-            // Decodifica a string Base64 para bytes
-            byte[] imageInBytes = Base64.getDecoder().decode(image.imageBase64());
+        if (numberOfImages > 3) {
+            createAnnexPage(annexDocument);
+        }
 
-            // Cria um nome de arquivo único para evitar sobreposições
-            String fileName = index + "_" + image.imageName();
-            File outputFile = new File(debugDir, fileName);
+        createAnnexPage(annexDocument);
 
-            // Usa try-with-resources para garantir que o FileOutputStream seja fechado
-            try (FileOutputStream fos = new FileOutputStream(outputFile)) {
-                fos.write(imageInBytes);
-            }
-            System.out.println("Imagem de debug salva em: " + outputFile.getAbsolutePath());
+        return annexDocument;
+    }
 
-        } catch (IOException e) {
-            System.err.println("ERRO ao salvar imagem de debug '" + image.imageName() + "': " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            // Isso acontece se a string Base64 for inválida
-            System.err.println("ERRO: A string Base64 para a imagem '" + image.imageName() + "' é inválida. " + e.getMessage());
+    private void createAnnexPage(PDDocument document) throws IOException {
+        final String title = "ANEXO - IMAGENS DO PRODUTO";
+
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        try(PDPageContentStream cs = new PDPageContentStream(
+                document,
+                page,
+                AppendMode.APPEND,
+                true
+        )){
+            cs.setFont(PDType1Font.HELVETICA_BOLD, 11);
+            cs.beginText();
+            cs.newLineAtOffset(225,650);
+            cs.showText(title);
+            cs.endText();
         }
     }
 }

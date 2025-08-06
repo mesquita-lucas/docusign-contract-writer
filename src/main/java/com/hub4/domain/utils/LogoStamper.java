@@ -41,6 +41,7 @@ public class LogoStamper {
     public byte[] save() throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
             document.save(baos);
+            document.close();
 
             return baos.toByteArray();
         }
