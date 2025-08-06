@@ -45,6 +45,7 @@ public class ContractWriter {
                     .orElse(null);
 
             if (annexSection != null) {
+                document.add(ControlElement.NEWPAGE);
                 document.add(paragraphFor(annexSection));
             }
         }

@@ -5,7 +5,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import java.io.*;
 import java.util.Base64;
@@ -50,8 +49,6 @@ public class AnnexImageDrawer {
                     );
                 }
 
-                saveImageForDebugging(image, currentPageIndex);
-
                 renderer.drawImageOnStream(contentStream, image);
             }
         } catch (Exception e){
@@ -72,6 +69,8 @@ public class AnnexImageDrawer {
     public byte[] save() throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()){
             document.save(baos);
+            document.close();
+
             return baos.toByteArray();
         }
     }

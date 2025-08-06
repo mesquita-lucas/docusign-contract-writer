@@ -16,12 +16,10 @@ public class ContractHandler {
     public void handleContract() throws IOException {
         PDFBuilder builder = new PDFBuilder(contractDTO);
 
-//        byte[] contractInBytes = builder.write()
-//                .addAnnexImages()
-//                .stampLogo()
-//                .build();
-
-        byte[] contractInBytes = builder.buildForDebug();
+        byte[] contractInBytes = builder.write()
+                .addAnnexImages()
+                .stampLogo()
+                .build();
 
         DocusignClient client = new DocusignClient(contractDTO, contractInBytes);
         client.sendEnvelope();

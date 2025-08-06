@@ -6,15 +6,16 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import rst.pdfbox.layout.text.Position;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
 
 public class PDFImageRenderer {
-    private final int CONTAINER_HEIGHT = 609;
-    private final int CONTAINER_WIDTH = 385;
-    private final int CELL_HEIGHT = CONTAINER_HEIGHT / 3;
+    private final float CONTAINER_HEIGHT = 609f;
+    private final float CONTAINER_WIDTH = 385f;
+    private final float CELL_HEIGHT = CONTAINER_HEIGHT / 3;
+    private final float PAGE_MARGIN_X = 70f;
+    private final float IMAGE_MARGIN = 15f;
 
     private int numberOfImagesAdded;
     private final PDDocument document;
@@ -59,12 +60,14 @@ public class PDFImageRenderer {
 
     private Position getDrawingPosition(Map<String, Float> newDimensions) {
         float imageWidth = newDimensions.get("width");
-        float cellMiddlePoint = (float) (CONTAINER_WIDTH + 140) / 2; // margins are 70 each
+        float cellMiddlePoint = PAGE_MARGIN_X + (CONTAINER_WIDTH / 2);
         int containerTopPosition = 692;
 
-        int yValue = (containerTopPosition - CELL_HEIGHT) - (CELL_HEIGHT * numberOfImagesAdded);
+        float yValue = (containerTopPosition - CELL_HEIGHT)
+                - (CELL_HEIGHT * numberOfImagesAdded)
+                - (IMAGE_MARGIN * numberOfImagesAdded);
 
-        return new Position(cellMiddlePoint - (imageWidth / 2), yValue);
+        return new Position(cellMiddlePoint - (imageWidth / 2) + 35, yValue);
     }
 
     private Map<String, Float> scale(PDImageXObject image) {
