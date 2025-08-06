@@ -16,8 +16,8 @@ public class AnnexImageDrawer {
     private final List<ImageDTO> images;
 
     public AnnexImageDrawer(List<ImageDTO> images) throws IOException {
-        this.document = createAnnexDocument();
         this.images = images;
+        this.document = createAnnexDocument();
     }
 
     public void draw() {
