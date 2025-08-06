@@ -20,7 +20,7 @@ public class LogoStamper {
     }
 
     public void stamp() throws IOException {
-        final int numberOfPages = document.getNumberOfPages() - 2;
+        final int numberOfPages = document.getNumberOfPages();
         final Position logoPosition = new Position(30, 765);
         final int logoSideSize = 50;
 

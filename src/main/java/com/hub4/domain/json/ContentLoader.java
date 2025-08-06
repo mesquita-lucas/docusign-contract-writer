@@ -87,7 +87,8 @@ public class ContentLoader {
                 json.get("exclusiveSale").toString(),
                 json.get("insurance").toString(),
                 json.get("generalProvisions").toString(),
-                json.get("signatures").toString()
+                json.get("signatures").toString(),
+                json.get("annex").toString()
         );
     }
 }
