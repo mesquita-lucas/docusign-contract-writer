@@ -6,9 +6,8 @@ import com.hub4.domain.utils.AnnexImageDrawer;
 import com.hub4.domain.model.ContractContents;
 import com.hub4.domain.utils.ContractWriter;
 import com.hub4.domain.utils.LogoStamper;
-import com.hub4.domain.utils.PDFMerger;
-import java.io.IOException;
 
+import java.io.IOException;
 
 public class PDFBuilder {
     private final ContractDTO contractDTO;
@@ -23,7 +22,8 @@ public class PDFBuilder {
     }
 
     public PDFBuilder write() throws IOException {
-        ContractWriter writer = new ContractWriter(contractContents);
+        int numberOfImages = contractDTO.images().size();
+        ContractWriter writer = new ContractWriter(contractContents, numberOfImages > 3);
         writer.writeTextToPDF();
 
         this.pdf = writer.save();
@@ -32,14 +32,10 @@ public class PDFBuilder {
     }
 
     public PDFBuilder addAnnexImages() throws IOException {
-        AnnexImageDrawer drawer = new AnnexImageDrawer(contractDTO.images());
+        AnnexImageDrawer drawer = new AnnexImageDrawer(pdf, contractDTO.images());
         drawer.draw();
-        byte[] annexDocumentInBytes = drawer.save();
 
-        PDFMerger merger = new PDFMerger(pdf,  annexDocumentInBytes);
-        merger.merge();
-
-        this.pdf = merger.saveFullContract();
+        this.pdf = drawer.save();
 
         return this;
     }

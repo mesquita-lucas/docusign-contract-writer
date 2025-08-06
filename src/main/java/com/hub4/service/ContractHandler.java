@@ -16,8 +16,7 @@ public class ContractHandler {
     public void handleContract() throws IOException {
         PDFBuilder builder = new PDFBuilder(contractDTO);
 
-        byte[] contractInBytes = builder
-                .write()
+        byte[] contractInBytes = builder.write()
                 .addAnnexImages()
                 .stampLogo()
                 .build();

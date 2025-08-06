@@ -3,10 +3,8 @@ package com.hub4.domain.utils;
 import com.hub4.api.dto.ImageDTO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.*;
 import java.util.List;
@@ -15,20 +13,21 @@ public class AnnexImageDrawer {
     private final PDDocument document;
     private final List<ImageDTO> images;
 
-    public AnnexImageDrawer(List<ImageDTO> images) throws IOException {
+    public AnnexImageDrawer(byte[] pdf, List<ImageDTO> images) throws IOException {
+        this.document = PDDocument.load(pdf);
         this.images = images;
-        this.document = createAnnexDocument();
     }
 
-    public void draw() {
+    public void draw(){
         if (images == null || images.isEmpty()) return;
 
         PDFImageRenderer renderer = new PDFImageRenderer(document);
         PDPageContentStream contentStream = null;
 
-        int currentPageIndex = 0;
+        int currentPageIndex = 3;
 
-        try {
+        try
+        {
             for(ImageDTO image : images){
                 if(renderer.isFull()){
                     if(contentStream != null){
@@ -55,7 +54,8 @@ public class AnnexImageDrawer {
             System.out.println("Erro ao desenhar imagem no PDF: " + e.getMessage());
         } finally {
             if (contentStream != null){
-                try {
+                try
+                {
                     contentStream.close();
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
@@ -72,37 +72,5 @@ public class AnnexImageDrawer {
             return baos.toByteArray();
         }
     }
-
-    private PDDocument createAnnexDocument() throws IOException {
-        int numberOfImages = images.size();
-        PDDocument annexDocument = new PDDocument();
-
-        if (numberOfImages > 3) {
-            createAnnexPage(annexDocument);
-        }
-
-        createAnnexPage(annexDocument);
-
-        return annexDocument;
-    }
-
-    private void createAnnexPage(PDDocument document) throws IOException {
-        final String title = "ANEXO - IMAGENS DO PRODUTO";
-
-        PDPage page = new PDPage();
-        document.addPage(page);
-
-        try(PDPageContentStream cs = new PDPageContentStream(
-                document,
-                page,
-                AppendMode.APPEND,
-                true
-        )){
-            cs.setFont(PDType1Font.HELVETICA_BOLD, 11);
-            cs.beginText();
-            cs.newLineAtOffset(225,650);
-            cs.showText(title);
-            cs.endText();
-        }
-    }
 }
+
