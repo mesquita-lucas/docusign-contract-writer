@@ -52,7 +52,6 @@ public class AnnexImageDrawer {
             }
         } catch (Exception e){
             System.out.println("Erro ao desenhar imagem no PDF: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             if (contentStream != null){
                 try
