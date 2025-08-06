@@ -13,7 +13,7 @@ public class Section {
     public Section(SectionType sType, String content, BaseFont baseFont, int fontSize) {
         this.sectionType = sType;
 
-        if(sType == SectionType.TITLE || sType == SectionType.ANNEX) {
+        if(sType == SectionType.TITLE) {
             this.alignment = Alignment.Center;
         } else {
             this.alignment = Alignment.Justify;

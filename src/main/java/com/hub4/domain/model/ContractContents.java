@@ -13,6 +13,5 @@ public record ContractContents(
         String exclusiveSale,
         String insurance,
         String generalProvisions,
-        String signatures,
-        String annex
+        String signatures
 ){}
