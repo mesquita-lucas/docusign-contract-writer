@@ -4,7 +4,9 @@ import com.docusign.esign.client.ApiClient;
 import com.docusign.esign.client.ApiException;
 import com.docusign.esign.client.auth.OAuth.UserInfo;
 import com.docusign.esign.client.auth.OAuth.OAuthToken;
+import com.docusign.esign.client.auth.OAuth.Account;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -35,8 +37,8 @@ public class DocusignAuthenticator {
         return new DocusignAuthenticator(config, PRODUCTION_ENVIRONMENT_ESIG_URL, PRODUCTION_ENVIRONMENT_AUTH_URL);
     }
 
-    public AuthData authenticate() throws IOException, ApiException {
-        InputStream keyInputStream = DocusignAuthenticator.class.getClassLoader().getResourceAsStream("secrets/private.key");
+    public AuthData authenticate(String targetAccountId) throws IOException, ApiException {
+        InputStream keyInputStream = new FileInputStream("app/secrets/private.key");
 
         Objects.requireNonNull(keyInputStream, "Private.key is null");
         byte[] privateKey = keyInputStream.readAllBytes();
@@ -53,10 +55,13 @@ public class DocusignAuthenticator {
         apiClient.addDefaultHeader("Authorization", "Bearer " + accessToken);
 
         UserInfo userInfo = apiClient.getUserInfo(accessToken);
-        String accountId = userInfo.getAccounts().getFirst().getAccountId();
+        Account targetAccount = userInfo.getAccounts().stream()
+                .filter(acc -> targetAccountId.equals(acc.getAccountId()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("O usuário não tem acesso à AccountId especificada."));
 
         keyInputStream.close();
 
-        return new AuthData(apiClient, accessToken, accountId);
+        return new AuthData(apiClient, accessToken, targetAccount.getAccountId());
     }
 }

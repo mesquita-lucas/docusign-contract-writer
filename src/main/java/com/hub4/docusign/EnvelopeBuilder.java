@@ -26,7 +26,7 @@ public class EnvelopeBuilder {
                 "1"
         );
 
-        ConfigLoader consigneeData = new ConfigLoader("secrets/consigneedata.config");
+        ConfigLoader consigneeData = new ConfigLoader("app/secrets/consigneedata.config");
 
         Signer consignee = createSigner(
                 consigneeData.get("name"),

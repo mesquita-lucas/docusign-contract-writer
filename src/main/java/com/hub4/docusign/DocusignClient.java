@@ -17,7 +17,7 @@ public class DocusignClient {
     private final String pdf;
 
     public DocusignClient(ContractDTO dto, byte[] contract) throws IOException {
-        this.config = new ConfigLoader("secrets/app.config");
+        this.config = new ConfigLoader("app/secrets/app.config");
         this.contractDTO = dto;
         this.pdf = Base64.getEncoder().encodeToString(contract);
     }
@@ -27,8 +27,8 @@ public class DocusignClient {
 
         try
         {
-            DocusignAuthenticator authenticator = DocusignAuthenticator.forDevEnvironment(config);
-            AuthData auth = authenticator.authenticate();
+            DocusignAuthenticator authenticator = DocusignAuthenticator.forProdEnvironment(config);
+            AuthData auth = authenticator.authenticate(config.get("apiAccountId"));
 
             EnvelopeDefinition envelope = EnvelopeBuilder.build(contractDTO, pdf);
 
