@@ -38,7 +38,7 @@ public class DocusignAuthenticator {
     }
 
     public AuthData authenticate(String targetAccountId) throws IOException, ApiException {
-        InputStream keyInputStream = new FileInputStream("app/secrets/private.key");
+        InputStream keyInputStream = new FileInputStream("/app/secrets/private.key");
 
         Objects.requireNonNull(keyInputStream, "Private.key is null");
         byte[] privateKey = keyInputStream.readAllBytes();

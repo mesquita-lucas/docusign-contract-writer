@@ -17,7 +17,7 @@ public class DocusignClient {
     private final String pdf;
 
     public DocusignClient(ContractDTO dto, byte[] contract) throws IOException {
-        this.config = new ConfigLoader("app/secrets/app.config");
+        this.config = new ConfigLoader("/app/secrets/app.config");
         this.contractDTO = dto;
         this.pdf = Base64.getEncoder().encodeToString(contract);
     }
