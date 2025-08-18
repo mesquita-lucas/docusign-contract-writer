@@ -2,11 +2,13 @@ package com.hub4.domain.json;
 
 import com.hub4.api.dto.ContractDTO;
 import com.hub4.domain.model.ContractContents;
+import com.hub4.domain.utils.CurrencyFormatter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -64,9 +66,13 @@ public class ContentLoader {
         placeholders.put("{{prod_ano}}", dto.prodYear());
         placeholders.put("{{prod_estado_conservacao}}", dto.conservationState());
         placeholders.put("{{prod_acessorios}}", dto.prodAccessories());
-        placeholders.put("{{prod_valor_venda}}", dto.prodSellValue());
-        placeholders.put("{{data}}", LocalDate.now().format(formatter));
 
+        BigDecimal sellValue = dto.prodSellValue();
+        String formattedValue = CurrencyFormatter.format(sellValue);
+
+        placeholders.put("{{prod_valor_venda}}", formattedValue);
+
+        placeholders.put("{{data}}", LocalDate.now().format(formatter));
         System.out.println("Placeholders gerados:");
         placeholders.forEach((k, v) -> System.out.println(k + " = " + v));
 
