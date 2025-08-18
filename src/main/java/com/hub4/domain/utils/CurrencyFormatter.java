@@ -13,6 +13,11 @@ public class CurrencyFormatter {
         }
 
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(BRAZIl);
-        return currencyFormat.format(value);
+
+        currencyFormat.setMaximumFractionDigits(2);
+        currencyFormat.setMinimumFractionDigits(2);
+
+        String formattedValue = currencyFormat.format(value);
+        return "R$ " + formattedValue;
     }
 }
