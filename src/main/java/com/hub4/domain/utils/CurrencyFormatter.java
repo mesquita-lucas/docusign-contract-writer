@@ -1,6 +1,9 @@
 package com.hub4.domain.utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -9,15 +12,12 @@ public class CurrencyFormatter {
 
     public static String format(BigDecimal value) {
         if (value == null) {
-            return NumberFormat.getCurrencyInstance(BRAZIl).format(BigDecimal.ZERO);
+            value = BigDecimal.ZERO;
         }
 
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(BRAZIl);
+        DecimalFormat formatter = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(BRAZIl));
 
-        currencyFormat.setMaximumFractionDigits(2);
-        currencyFormat.setMinimumFractionDigits(2);
-
-        String formattedValue = currencyFormat.format(value);
-        return "R$ " + formattedValue;
+        value = value.setScale(2, RoundingMode.HALF_UP);
+        return "R$ " + formatter.format(value);
     }
 }
