@@ -2,7 +2,6 @@ package com.hub4.domain.utils;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.Locale;
 
 public class CurrencyFormatter {
