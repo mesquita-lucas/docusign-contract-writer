@@ -23,7 +23,7 @@ public class EnvelopeBuilder {
                 contractDTO.consignorName(),
                 contractDTO.consignorEmail(),
                 consignorTabs,
-                "1"
+                "2"
         );
 
         ConfigLoader consigneeData = new ConfigLoader("/app/secrets/consigneedata.config");
@@ -32,7 +32,7 @@ public class EnvelopeBuilder {
                 consigneeData.get("name"),
                 consigneeData.get("email"),
                 consigneeTabs,
-                "2"
+                "1"
         );
 
         Recipients recipients = new Recipients();
