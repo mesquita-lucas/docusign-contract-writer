@@ -26,7 +26,7 @@ public class EnvelopeBuilder {
                 "2"
         );
 
-        ConfigLoader consigneeData =  null;
+        ConfigLoader consigneeData;
 
         if("SP".equals(contractDTO.location())){
             consigneeData = new ConfigLoader("/app/secrets/consigneedata_sp.config");
