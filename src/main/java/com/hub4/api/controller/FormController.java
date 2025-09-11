@@ -17,7 +17,7 @@ public class FormController {
 
     public FormController(ApiKeyValidator apiKeyValidator) {
         this.apiKeyValidator = apiKeyValidator;
-    }
+    } 
 
     @PostMapping("/form-data")
     public ResponseEntity<String> receiveFormData(

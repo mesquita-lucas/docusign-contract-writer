@@ -14,5 +14,6 @@ public record ContractDTO(
         String conservationState,
         String prodAccessories,
         BigDecimal prodSellValue,
-        List<ImageDTO> images
+        List<ImageDTO> images,
+        String location
 ){}

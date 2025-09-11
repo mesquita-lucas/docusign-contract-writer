@@ -16,8 +16,16 @@ public class PDFBuilder {
 
     public PDFBuilder(ContractDTO contractDTO) {
         this.contractDTO = contractDTO;
+        ContentLoader loader;
 
-        ContentLoader loader = new ContentLoader(contractDTO);
+        if ("SP".equals(contractDTO.location())){
+            loader = ContentLoader.loadTemplateForSP(contractDTO);
+        } else if ("BSB".equals(contractDTO.location())) {
+            loader = ContentLoader.loadTemplateForBSB(contractDTO);
+        } else {
+            throw new IllegalArgumentException("Invalid location: " + contractDTO.location());
+        }
+
         this.contractContents = loader.getContents();
     }
 

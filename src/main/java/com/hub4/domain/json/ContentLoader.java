@@ -18,8 +18,8 @@ import java.util.Objects;
 public class ContentLoader {
     private final ContractContents contents;
 
-    public ContentLoader(ContractDTO dto) {
-        try (InputStream is = ContentLoader.class.getClassLoader().getResourceAsStream("template.json")) {
+    private ContentLoader(String templatePath, ContractDTO dto) {
+        try (InputStream is = ContentLoader.class.getClassLoader().getResourceAsStream(templatePath)) {
             Objects.requireNonNull(is, "template not found");
 
             JSONParser parser = new JSONParser();
@@ -40,6 +40,14 @@ public class ContentLoader {
             System.out.println("Unable to load template");
             throw new RuntimeException("Erro ao carregar o template JSON", e);
         }
+    }
+
+    public static ContentLoader loadTemplateForSP(ContractDTO dto) {
+        return new ContentLoader("template_sp.json", dto);
+    }
+
+    public static ContentLoader loadTemplateForBSB(ContractDTO dto) {
+        return new ContentLoader("template_bsb.json", dto);
     }
 
     public ContractContents getContents() {

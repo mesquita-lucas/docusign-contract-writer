@@ -26,7 +26,15 @@ public class EnvelopeBuilder {
                 "2"
         );
 
-        ConfigLoader consigneeData = new ConfigLoader("/app/secrets/consigneedata.config");
+        ConfigLoader consigneeData =  null;
+
+        if("SP".equals(contractDTO.location())){
+            consigneeData = new ConfigLoader("/app/secrets/consigneedata_sp.config");
+        } else if ("BSB".equals(contractDTO.location())){
+            consigneeData = new ConfigLoader("/app/secrets/consigneedata_bsb.config");
+        } else {
+            throw new RuntimeException("Unknown location: " + contractDTO.location());
+        }
 
         Signer consignee = createSigner(
                 consigneeData.get("name"),
