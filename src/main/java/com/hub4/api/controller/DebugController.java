@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class DebugController{
+public class DebugController {
 
     @PostMapping("/debug-req")
     public ResponseEntity<String> debugRequest(

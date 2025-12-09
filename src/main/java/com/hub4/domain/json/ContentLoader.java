@@ -2,13 +2,11 @@ package com.hub4.domain.json;
 
 import com.hub4.api.dto.ContractDTO;
 import com.hub4.domain.model.ContractContents;
-import com.hub4.domain.utils.CurrencyFormatter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -48,7 +46,7 @@ public class ContentLoader {
 
     public static ContentLoader loadTemplateForBSB(ContractDTO dto) {
         return new ContentLoader("template_bsb.json", dto);
-    }
+    } 
 
     public ContractContents getContents() {
         return contents;
@@ -75,10 +73,9 @@ public class ContentLoader {
         placeholders.put("{{prod_estado_conservacao}}", dto.conservationState());
         placeholders.put("{{prod_acessorios}}", dto.prodAccessories());
 
-        BigDecimal sellValue = dto.prodSellValue();
-        String formattedValue = CurrencyFormatter.format(sellValue);
+        String signedValue = "R$" + dto.prodSellValue();
 
-        placeholders.put("{{prod_valor_venda}}", formattedValue);
+        placeholders.put("{{prod_valor_venda}}", signedValue);
 
         placeholders.put("{{data}}", LocalDate.now().format(formatter));
         System.out.println("Placeholders gerados:");

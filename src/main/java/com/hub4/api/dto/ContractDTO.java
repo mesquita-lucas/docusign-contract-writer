@@ -1,6 +1,5 @@
 package com.hub4.api.dto;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public record ContractDTO(
@@ -13,7 +12,7 @@ public record ContractDTO(
         String prodYear,
         String conservationState,
         String prodAccessories,
-        BigDecimal prodSellValue,
+        String prodSellValue,
         List<ImageDTO> images,
         String location
 ){}
